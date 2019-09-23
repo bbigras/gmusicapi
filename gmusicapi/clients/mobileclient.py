@@ -58,26 +58,7 @@ class Mobileclient(_OAuthClient):
         return device_id
 
     def _validate_device_id(self, device_id, is_mac=False):
-        """Ensure that a given device_id belongs to the user supplying it."""
-        if is_mac:  # Always allow logins with MAC address.
-            return device_id
-
-        device_ids = []
-        for d in self.get_registered_devices():
-            if d['id'].startswith('ios:'):
-                device_ids.append(d['id'])
-            elif d['id'].startswith('0x'):
-                # old android format
-                device_ids.append(d['id'][2:])
-            else:
-                # mac address format
-                device_ids.append(d['id'].replace(':', ''))
-
-        if device_id in device_ids:
-            return device_id
-        else:
-            self.logout()
-            raise InvalidDeviceId('Invalid device_id %s.' % device_id, device_ids)
+        return device_id
 
     @property
     def locale(self):
